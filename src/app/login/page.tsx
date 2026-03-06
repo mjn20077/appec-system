@@ -7,12 +7,16 @@ import { USERS } from "@/lib/data";
 import type { UserRole } from "@/lib/types";
 
 const ROLE_DASHBOARDS: Record<UserRole, string> = {
-  secretary: "/dashboard/secretary",
-  dos: "/dashboard/dos",
-  dod: "/dashboard/dod",
-  teacher: "/dashboard/teacher",
-  student: "/dashboard/student",
-  hod: "/dashboard/hod",
+  secretary:  "/dashboard/secretary",
+  dos:        "/dashboard/dos",
+  dod:        "/dashboard/dod",
+  teacher:    "/dashboard/teacher",
+  student:    "/dashboard/student",
+  hod:        "/dashboard/hod",
+  principal:  "/dashboard/principal",
+  bursar:     "/dashboard/bursar",
+  librarian:  "/dashboard/librarian",
+  it_admin:   "/dashboard/it_admin",
 };
 
 export default function LoginPage() {

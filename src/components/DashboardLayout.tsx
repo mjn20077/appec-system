@@ -19,13 +19,18 @@ interface DashboardLayoutProps {
   roleColor: string;
 }
 
+// Role color mapping — used as fallback if roleColor prop is not provided
 const ROLE_COLORS: Record<UserRole, string> = {
   secretary: "bg-yellow-500",
-  dos: "bg-blue-600",
-  dod: "bg-red-600",
-  teacher: "bg-green-600",
-  student: "bg-orange-500",
-  hod: "bg-purple-600",
+  dos:       "bg-blue-600",
+  dod:       "bg-red-600",
+  teacher:   "bg-green-600",
+  student:   "bg-orange-500",
+  hod:       "bg-purple-600",
+  principal: "bg-rose-700",
+  bursar:    "bg-emerald-700",
+  librarian: "bg-teal-700",
+  it_admin:  "bg-slate-700",
 };
 
 export default function DashboardLayout({

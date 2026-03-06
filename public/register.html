@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Registration - APPEC TSS College</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="auth-page">
+  <div class="container" style="max-width: 600px;">
+    <div class="auth-card">
+      <div class="auth-logo">
+        <div class="logo-icon">A</div>
+        <h1>APPEC TSS College</h1>
+        <p>Student Registration</p>
+      </div>
+      
+      <!-- Registration Form -->
+      <div id="registrationForm">
+        <h2>Complete Your Registration</h2>
+        <p class="subtitle">Fill in your personal details to complete the registration process.</p>
+        
+        <div class="error-message" id="registrationError"></div>
+        
+        <form id="registerForm">
+          <div class="form-group">
+            <label>Examination Code</label>
+            <input type="text" id="examCode" readonly style="background: var(--gray-100);">
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label>First Name</label>
+              <input type="text" id="firstName" required>
+            </div>
+            <div class="form-group">
+              <label>Last Name</label>
+              <input type="text" id="lastName" required>
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label>Date of Birth</label>
+              <input type="date" id="dateOfBirth" required>
+            </div>
+            <div class="form-group">
+              <label>Gender</label>
+              <select id="gender" required>
+                <option value="">Select...</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+              </select>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label>Phone Number</label>
+            <input type="tel" id="phone" placeholder="+234-xxx-xxx-xxxx" required>
+          </div>
+          
+          <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" id="email" placeholder="yourname@student.appec.edu" required>
+          </div>
+          
+          <div class="form-group">
+            <label>Address</label>
+            <input type="text" id="address" placeholder="Your residential address" required>
+          </div>
+          
+          <div class="form-group">
+            <label>Guardian/Parent Name</label>
+            <input type="text" id="guardianName" required>
+          </div>
+          
+          <div class="form-group">
+            <label>Guardian/Parent Phone</label>
+            <input type="tel" id="guardianPhone" placeholder="+234-xxx-xxx-xxxx" required>
+          </div>
+          
+          <button type="submit" class="btn btn-primary btn-block">Complete Registration</button>
+        </form>
+      </div>
+      
+      <!-- Success -->
+      <div id="registrationSuccess" class="hidden" style="text-align: center;">
+        <div style="width: 60px; height: 60px; background: #d1fae5; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem;">
+          <svg width="32" height="32" fill="none" stroke="#047857" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+          </svg>
+        </div>
+        
+        <h2>Registration Complete!</h2>
+        <p class="subtitle">Your registration has been successfully submitted.</p>
+        
+        <div style="background: #dbeafe; padding: 1rem; border-radius: var(--radius-lg); margin: 1rem 0;">
+          <p style="font-size: 0.875rem; color: var(--gray-600);">Your Registration Number is:</p>
+          <p style="font-size: 1.5rem; font-weight: 700; color: var(--blue-700);" id="registeredRegNumber">-</p>
+        </div>
+        
+        <p style="font-size: 0.875rem; color: var(--gray-500);">Keep this number safe. You will need it to view your results.</p>
+        
+        <a href="results.html" class="btn btn-primary btn-block">View Results</a>
+        <a href="index.html" class="btn btn-outline" style="width: 100%; margin-top: 0.5rem;">Back to Home</a>
+      </div>
+    </div>
+    
+    <div class="text-center" style="margin-top: 1rem;">
+      <a href="index.html" style="color: var(--blue-200);">← Back to Home</a>
+    </div>
+  </div>
+  
+  <script src="js/main.js"></script>
+</body>
+</html>

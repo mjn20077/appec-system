@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>View Results - APPEC TSS College</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="auth-page">
+  <div class="container" style="max-width: 800px;">
+    <div class="auth-card">
+      <div class="auth-logo">
+        <div class="logo-icon">A</div>
+        <h1>APPEC TSS College</h1>
+        <p>Results Portal</p>
+      </div>
+      
+      <h2>View Your Results</h2>
+      <p class="subtitle">Enter your registration number to view your academic results.</p>
+      
+      <div class="error-message" id="resultsError"></div>
+      
+      <form id="resultsForm">
+        <div class="form-group">
+          <label>Registration Number</label>
+          <input type="text" id="regNumber" placeholder="e.g. APPEC/2024/001" required>
+        </div>
+        
+        <button type="submit" class="btn btn-primary btn-block">View Results</button>
+      </form>
+      
+      <!-- Results Content -->
+      <div id="resultsContent" class="hidden" style="margin-top: 2rem;">
+        <div style="background: var(--blue-50); padding: 1rem; border-radius: var(--radius-lg); margin-bottom: 1rem;">
+          <h3 style="font-size: 1rem; margin-bottom: 0.5rem;">Student Information</h3>
+          <p><strong>Name:</strong> <span id="resultName">-</span></p>
+          <p><strong>Reg. No:</strong> <span id="resultReg">-</span></p>
+          <p><strong>Level:</strong> <span id="resultLevel">-</span></p>
+          <p><strong>Department:</strong> <span id="resultDepartment">-</span></p>
+        </div>
+        
+        <h3 style="font-size: 1rem; margin-bottom: 0.5rem;">Academic Results - First Semester 2024/2025</h3>
+        <table style="width: 100%; margin-bottom: 1rem;">
+          <thead>
+            <tr>
+              <th>Course</th>
+              <th>CA</th>
+              <th>Exam</th>
+              <th>Total</th>
+              <th>Grade</th>
+            </tr>
+          </thead>
+          <tbody id="marksTable">
+          </tbody>
+        </table>
+        
+        <div style="background: var(--blue-50); padding: 1rem; border-radius: var(--radius-lg);">
+          <h3 style="font-size: 1rem; margin-bottom: 0.5rem;">Discipline Assessment</h3>
+          <p><strong>Total Score:</strong> <span id="disciplineTotal">-</span></p>
+          <p><strong>Remarks:</strong> <span id="disciplineRemarks">-</span></p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="text-center" style="margin-top: 1rem;">
+      <a href="index.html" style="color: var(--blue-200);">← Back to Home</a>
+    </div>
+  </div>
+  
+  <script src="js/main.js"></script>
+</body>
+</html>

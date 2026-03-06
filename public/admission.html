@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admission Letter - APPEC TSS College</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="auth-page">
+  <div class="container" style="max-width: 800px;">
+    <!-- Header -->
+    <div class="text-center mb-4">
+      <div class="logo-icon" style="margin: 0 auto 1rem;">A</div>
+      <h1 style="color: white; font-size: 1.5rem;">APPEC TSS College</h1>
+      <p style="color: var(--blue-200);">Admission Letter Portal</p>
+    </div>
+    
+    <!-- Step 1: Verify -->
+    <div id="verifyStep" class="auth-card">
+      <h2>Verify Examination Code</h2>
+      <p class="subtitle">Enter your examination code issued after passing the entry examination.</p>
+      
+      <div class="error-message" id="verifyError"></div>
+      <div class="alert alert-info" id="verifySuccess" style="display: none;"></div>
+      
+      <form id="verifyForm">
+        <div class="form-group">
+          <label for="examCode">Examination Code</label>
+          <input type="text" id="examCode" placeholder="e.g. APPEC-2024-002" required style="text-transform: uppercase;">
+        </div>
+        
+        <button type="submit" class="btn btn-primary btn-block">Verify Code</button>
+      </form>
+      
+      <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--gray-100);">
+        <p style="font-size: 0.75rem; color: var(--gray-500); margin-bottom: 0.5rem;">Available Demo Codes (not yet used):</p>
+        <div id="availableCodes" style="display: flex; flex-direction: column; gap: 0.5rem;"></div>
+      </div>
+    </div>
+    
+    <!-- Step 2: Letter -->
+    <div id="letterStep" class="auth-card" style="display: none;">
+      <div style="background: var(--blue-900); color: white; padding: 1.5rem; border-radius: var(--radius-xl) var(--radius-xl) 0 0; margin: -2rem -2rem 1.5rem; text-align: center;">
+        <div class="logo-icon" style="margin: 0 auto 0.5rem;">A</div>
+        <h3 style="font-size: 1.25rem;">APPEC TSS COLLEGE</h3>
+        <p style="font-size: 0.75rem; color: var(--blue-200);">P.O. Box 1234, Academic City | Tel: +234-800-APPEC</p>
+        <h4 style="color: var(--yellow-400); margin-top: 0.5rem;">ADMISSION LETTER</h4>
+      </div>
+      
+      <p>Dear <strong id="letterName">Candidate</strong>,</p>
+      <p style="margin: 1rem 0;">We are pleased to inform you that following your successful performance in the APPEC TSS College Entry Examination, you have been <strong>admitted</strong> for the Academic Year <strong>2024/2025</strong>.</p>
+      
+      <div style="background: var(--blue-50); padding: 1rem; border-radius: var(--radius-lg); margin: 1rem 0;">
+        <h4 style="font-size: 0.875rem; margin-bottom: 0.5rem;">Admission Details:</h4>
+        <p><strong>Code:</strong> <span id="letterCode">-</span></p>
+        <p><strong>Program:</strong> <span id="letterProgram">-</span></p>
+        <p><strong>Department:</strong> <span id="letterDepartment">-</span></p>
+        <p><strong>Level:</strong> <span id="letterLevel">-</span></p>
+      </div>
+      
+      <p>Please confirm this admission letter to proceed with registration.</p>
+      
+      <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+        <button id="confirmAdmission" class="btn btn-green" style="flex: 1;">Confirm Admission Letter</button>
+        <button onclick="window.print()" class="btn btn-primary" style="flex: 1;">Print</button>
+      </div>
+      
+      <button onclick="location.reload()" class="btn btn-outline" style="width: 100%; margin-top: 0.5rem;">← Back</button>
+    </div>
+    
+    <!-- Step 3: Confirmed -->
+    <div id="confirmedStep" class="auth-card" style="display: none; text-align: center;">
+      <div style="width: 60px; height: 60px; background: #d1fae5; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem;">
+        <svg width="32" height="32" fill="none" stroke="#047857" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+        </svg>
+      </div>
+      
+      <h2>Admission Confirmed!</h2>
+      <p class="subtitle">Your admission letter has been confirmed. You may now proceed to registration.</p>
+      
+      <div style="background: #d1fae5; padding: 1rem; border-radius: var(--radius-lg); margin: 1rem 0; text-align: left;">
+        <p><strong>Name:</strong> <span id="confirmedName">-</span></p>
+        <p><strong>Code:</strong> <span id="confirmedCode">-</span></p>
+        <p><strong>Program:</strong> <span id="confirmedProgram">-</span></p>
+      </div>
+      
+      <a href="register.html" class="btn btn-primary btn-block">Proceed to Registration →</a>
+      <a href="index.html" class="btn btn-outline" style="width: 100%; margin-top: 0.5rem;">Back to Home</a>
+    </div>
+    
+    <div class="text-center" style="margin-top: 1rem;">
+      <a href="index.html" style="color: var(--blue-200);">← Back to Home</a>
+    </div>
+  </div>
+  
+  <script src="js/main.js"></script>
+</body>
+</html>
