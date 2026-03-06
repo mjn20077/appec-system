@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Next.js Template",
-  description: "A minimal Next.js starter template",
+  title: "APPEC TSS College Web System",
+  description: "Comprehensive academic and administrative management platform for APPEC TSS College",
 };
 
 export default function RootLayout({
