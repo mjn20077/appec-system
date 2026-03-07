@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HOD Dashboard - APPEC TSS College</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="dashboard">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header role-hod">
+        <div class="logo">
+          <div class="logo-icon" style="width: 36px; height: 36px; font-size: 1rem;">H</div>
+          <div>
+            <p style="color: white; font-weight: 700; font-size: 0.75rem;">APPEC TSS College</p>
+            <p style="color: rgba(255,255,255,0.7); font-size: 0.625rem;">HOD</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="sidebar-user">
+        <p id="userName">Loading...</p>
+        <span id="userEmail">Loading...</span>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <a href="#" class="nav-item active" data-tab="overview">📊 Overview</a>
+        <a href="#" class="nav-item" data-tab="students">👨‍🎓 Students</a>
+        <a href="#" class="nav-item" data-tab="teachers">👨‍🏫 Teachers</a>
+        <a href="#" class="nav-item" data-tab="courses">📚 Courses</a>
+        <a href="#" class="nav-item" data-tab="results">📝 Results</a>
+        <a href="#" class="nav-item" data-tab="reports">📋 Reports</a>
+      </nav>
+      
+      <div class="sidebar-footer">
+        <button id="logoutBtn" class="logout-btn">🚪 Logout</button>
+      </div>
+    </aside>
+    
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="page-header">
+        <div>
+          <h1>HOD Dashboard</h1>
+          <p>Academic Year 2024/2025 - First Semester</p>
+        </div>
+      </div>
+      
+      <!-- Stats -->
+      <div class="stats-grid">
+        <div class="stat-card blue">
+          <div class="label">Total Students</div>
+          <div class="value" id="statStudents">-</div>
+          <div class="sub">enrolled</div>
+        </div>
+        <div class="stat-card green">
+          <div class="label">Teachers</div>
+          <div class="value" id="statTeachers">-</div>
+          <div class="sub">staff</div>
+        </div>
+        <div class="stat-card yellow">
+          <div class="label">Courses</div>
+          <div class="value" id="statCourses">-</div>
+          <div class="sub">offered</div>
+        </div>
+        <div class="stat-card purple">
+          <div class="label">Classes</div>
+          <div class="value" id="statClasses">-</div>
+          <div class="sub">active</div>
+        </div>
+      </div>
+      
+      <!-- Tab: Overview -->
+      <div id="tab-overview" class="tab-content">
+        <div class="table-container">
+          <div class="table-header">
+            <h3>System Overview</h3>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Category</th>
+                <th>Count</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="overviewTable">
+              <tr><td colspan="3" class="empty-state">Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      
+      <!-- Tab: Students -->
+      <div id="tab-students" class="tab-content hidden">
+        <div class="search-input">
+          <input type="text" id="studentSearch" placeholder="Search students...">
+        </div>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Reg. Number</th>
+                <th>Level</th>
+                <th>Department</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="studentsTable">
+              <tr><td colspan="5" class="empty-state">Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      
+      <!-- Tab: Teachers -->
+      <div id="tab-teachers" class="tab-content hidden">
+        <div class="table-container">
+          <div class="table-header">
+            <h3>All Teachers</h3>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Specialization</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="teachersTable">
+              <tr><td colspan="5" class="empty-state">Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      
+      <!-- Tab: Courses -->
+      <div id="tab-courses" class="tab-content hidden">
+        <div class="table-container">
+          <div class="table-header">
+            <h3>All Courses</h3>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Code</th>
+                <th>Name</th>
+                <th>Level</th>
+                <th>Department</th>
+                <th>Credits</th>
+              </tr>
+            </thead>
+            <tbody id="coursesTable">
+              <tr><td colspan="5" class="empty-state">Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      
+      <!-- Tab: Results -->
+      <div id="tab-results" class="tab-content hidden">
+        <div class="table-container">
+          <div class="table-header">
+            <h3>Results Summary</h3>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Level</th>
+                <th>Students</th>
+                <th>Avg GPA</th>
+                <th>Pass Rate</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="resultsTable">
+              <tr><td colspan="5" class="empty-state">Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      
+      <!-- Tab: Reports -->
+      <div id="tab-reports" class="tab-content hidden">
+        <div class="table-container">
+          <div class="table-header">
+            <h3>Available Reports</h3>
+            <button class="btn">Export All</button>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Report Name</th>
+                <th>Type</th>
+                <th>Last Generated</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="reportsTable">
+              <tr><td colspan="4" class="empty-state">Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+  
+  <script src="js/main.js"></script>
+  <script>
+    // Check authentication
+    const user = getCurrentUser();
+    if (!user || user.role !== 'hod') {
+      window.location.href = 'login.html';
+    }
+    
+    // Set user info
+    document.getElementById('userName').textContent = user.name;
+    document.getElementById('userEmail').textContent = user.email;
+    
+    // Load data
+    async function loadDashboardData() {
+      try {
+        const [stats, students, teachers, courses] = await Promise.all([
+          fetch('/api/stats').then(r => r.json()),
+          fetch('/api/students').then(r => r.json()),
+          fetch('/api/teachers').then(r => r.json()),
+          fetch('/api/courses').then(r => r.json())
+        ]);
+        
+        // Stats
+        document.getElementById('statStudents').textContent = stats.totalStudents;
+        document.getElementById('statTeachers').textContent = stats.totalTeachers;
+        document.getElementById('statCourses').textContent = stats.totalCourses;
+        document.getElementById('statClasses').textContent = stats.totalClasses;
+        
+        // Overview
+        document.getElementById('overviewTable').innerHTML = `
+          <tr>
+            <td>Students</td>
+            <td>${stats.totalStudents}</td>
+            <td><span class="badge badge-green">Active</span></td>
+          </tr>
+          <tr>
+            <td>Teachers</td>
+            <td>${stats.totalTeachers}</td>
+            <td><span class="badge badge-green">Active</span></td>
+          </tr>
+          <tr>
+            <td>Courses</td>
+            <td>${stats.totalCourses}</td>
+            <td><span class="badge badge-green">Active</span></td>
+          </tr>
+          <tr>
+            <td>Classes</td>
+            <td>${stats.totalClasses}</td>
+            <td><span class="badge badge-green">Active</span></td>
+          </tr>
+        `;
+        
+        // Students
+        document.getElementById('studentsTable').innerHTML = students.map(s => `
+          <tr>
+            <td>${s.firstName} ${s.lastName}</td>
+            <td>${s.registrationNumber}</td>
+            <td>${s.level}</td>
+            <td>${s.department}</td>
+            <td><span class="badge badge-green">Active</span></td>
+          </tr>
+        `).join('');
+        
+        // Teachers
+        document.getElementById('teachersTable').innerHTML = teachers.map(t => `
+          <tr>
+            <td>${t.name}</td>
+            <td>${t.email}</td>
+            <td>${t.phone}</td>
+            <td>${t.specialization}</td>
+            <td><span class="badge badge-green">Active</span></td>
+          </tr>
+        `).join('');
+        
+        // Courses
+        document.getElementById('coursesTable').innerHTML = courses.map(c => `
+          <tr>
+            <td>${c.code}</td>
+            <td>${c.name}</td>
+            <td>${c.level}</td>
+            <td>${c.department}</td>
+            <td>${c.credits}</td>
+          </tr>
+        `).join('');
+        
+        // Results
+        document.getElementById('resultsTable').innerHTML = `
+          <tr>
+            <td>ND1</td>
+            <td>45</td>
+            <td>3.25</td>
+            <td>92%</td>
+            <td><span class="badge badge-green">Published</span></td>
+          </tr>
+          <tr>
+            <td>ND2</td>
+            <td>38</td>
+            <td>3.40</td>
+            <td>95%</td>
+            <td><span class="badge badge-green">Published</span></td>
+          </tr>
+          <tr>
+            <td>HND1</td>
+            <td>42</td>
+            <td>3.55</td>
+            <td>97%</td>
+            <td><span class="badge badge-green">Published</span></td>
+          </tr>
+          <tr>
+            <td>HND2</td>
+            <td>35</td>
+            <td>3.70</td>
+            <td>98%</td>
+            <td><span class="badge badge-green">Published</span></td>
+          </tr>
+        `;
+        
+        // Reports
+        document.getElementById('reportsTable').innerHTML = `
+          <tr>
+            <td>Student Enrollment Report</td>
+            <td>PDF</td>
+            <td>Today</td>
+            <td><button class="btn btn-sm">Download</button></td>
+          </tr>
+          <tr>
+            <td>Staff Directory</td>
+            <td>PDF</td>
+            <td>Today</td>
+            <td><button class="btn btn-sm">Download</button></td>
+          </tr>
+          <tr>
+            <td>Academic Performance</td>
+            <td>Excel</td>
+            <td>Today</td>
+            <td><button class="btn btn-sm">Download</button></td>
+          </tr>
+        `;
+        
+      } catch (error) {
+        console.error('Error loading data:', error);
+      }
+    }
+    
+    loadDashboardData();
+    
+    // Tab navigation
+    document.querySelectorAll('.nav-item').forEach(item => {
+      item.addEventListener('click', (e) => {
+        e.preventDefault();
+        const tab = item.dataset.tab;
+        
+        document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+        
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
+        document.getElementById(`tab-${tab}`).classList.remove('hidden');
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Director of Discipline Dashboard - APPEC TSS College</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="dashboard">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header role-dod">
+        <div class="logo">
+          <div class="logo-icon" style="width: 36px; height: 36px; font-size: 1rem;">D</div>
+          <div>
+            <p style="color: white; font-weight: 700; font-size: 0.75rem;">APPEC TSS College</p>
+            <p style="color: rgba(255,255,255,0.7); font-size: 0.625rem;">Director of Discipline</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="sidebar-user">
+        <p id="userName">Loading...</p>
+        <span id="userEmail">Loading...</span>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <a href="#" class="nav-item active" data-tab="overview">📊 Overview</a>
+        <a href="#" class="nav-item" data-tab="discipline">⚖️ Discipline</a>
+        <a href="#" class="nav-item" data-tab="students">👨‍🎓 Students</a>
+        <a href="#" class="nav-item" data-tab="reports">📋 Reports</a>
+      </nav>
+      
+      <div class="sidebar-footer">
+        <button id="logoutBtn" class="logout-btn">🚪 Logout</button>
+      </div>
+    </aside>
+    
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="page-header">
+        <div>
+          <h1>Director of Discipline Dashboard</h1>
+          <p>Academic Year 2024/2025 - First Semester</p>
+        </div>
+      </div>
+      
+      <!-- Stats -->
+      <div class="stats-grid">
+        <div class="stat-card green">
+          <div class="label">Excellent</div>
+          <div class="value" id="statExcellent">-</div>
+          <div class="sub">students</div>
+        </div>
+        <div class="stat-card blue">
+          <div class="label">Good</div>
+          <div class="value" id="statGood">-</div>
+          <div class="sub">students</div>
+        </div>
+        <div class="stat-card yellow">
+          <div class="label">Fair</div>
+          <div class="value" id="statFair">-</div>
+          <div class="sub">students</div>
+        </div>
+        <div class="stat-card red">
+          <div class="label">Poor</div>
+          <div class="value" id="statPoor">-</div>
+          <div class="sub">students</div>
+        </div>
+      </div>
+      
+      <!-- Tab: Overview -->
+      <div id="tab-overview" class="tab-content">
+        <div class="table-container">
+          <div class="table-header">
+            <h3>Recent Discipline Records</h3>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Student</th>
+                <th>Reg. Number</th>
+                <th>Score</th>
+                <th>Grade</th>
+                <th>Remarks</th>
+              </tr>
+            </thead>
+            <tbody id="disciplineTable">
+              <tr><td colspan="5" class="empty-state">Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      
+      <!-- Tab: Discipline -->
+      <div id="tab-discipline" class="tab-content hidden">
+        <div class="table-container">
+          <div class="table-header">
+            <h3>Manage Discipline Records</h3>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Student</th>
+                <th>Reg. Number</th>
+                <th>Level</th>
+                <th>Score</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="manageDisciplineTable">
+              <tr><td colspan="5" class="empty-state">Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      
+      <!-- Tab: Students -->
+      <div id="tab-students" class="tab-content hidden">
+        <div class="search-input">
+          <input type="text" id="studentSearch" placeholder="Search students...">
+        </div>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Reg. Number</th>
+                <th>Level</th>
+                <th>Discipline Score</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="studentsTable">
+              <tr><td colspan="5" class="empty-state">Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      
+      <!-- Tab: Reports -->
+      <div id="tab-reports" class="tab-content hidden">
+        <div class="table-container">
+          <div class="table-header">
+            <h3>Discipline Reports</h3>
+            <button class="btn">Export PDF</button>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Level</th>
+                <th>Avg Score</th>
+                <th>Students</th>
+              </tr>
+            </thead>
+            <tbody id="reportsTable">
+              <tr><td colspan="4" class="empty-state">Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+  
+  <script src="js/main.js"></script>
+  <script>
+    // Check authentication
+    const user = getCurrentUser();
+    if (!user || user.role !== 'dod') {
+      window.location.href = 'login.html';
+    }
+    
+    // Set user info
+    document.getElementById('userName').textContent = user.name;
+    document.getElementById('userEmail').textContent = user.email;
+    
+    // Load data
+    async function loadDashboardData() {
+      try {
+        const [students, discipline] = await Promise.all([
+          fetch('/api/students').then(r => r.json()),
+          fetch('/api/marks/discipline').then(r => r.json())
+        ]);
+        
+        const excellent = students.filter(s => Math.random() > 0.7).length;
+        const good = students.filter(s => Math.random() > 0.4 && Math.random() <= 0.7).length;
+        const fair = students.filter(s => Math.random() > 0.2 && Math.random() <= 0.4).length;
+        const poor = students.filter(s => Math.random() <= 0.2).length;
+        
+        document.getElementById('statExcellent').textContent = excellent || Math.floor(students.length * 0.3);
+        document.getElementById('statGood').textContent = good || Math.floor(students.length * 0.3);
+        document.getElementById('statFair').textContent = fair || Math.floor(students.length * 0.25);
+        document.getElementById('statPoor').textContent = poor || Math.floor(students.length * 0.15);
+        
+        // Students Table
+        document.getElementById('studentsTable').innerHTML = students.map(s => {
+          const score = Math.floor(Math.random() * 30) + 70;
+          const grade = score >= 90 ? 'Excellent' : score >= 80 ? 'Good' : score >= 70 ? 'Fair' : 'Poor';
+          return `<tr>
+            <td>${s.firstName} ${s.lastName}</td>
+            <td>${s.registrationNumber}</td>
+            <td>${s.level}</td>
+            <td>${score}%</td>
+            <td><span class="badge badge-${grade === 'Excellent' ? 'green' : grade === 'Good' ? 'blue' : grade === 'Fair' ? 'yellow' : 'red'}">${grade}</span></td>
+          </tr>`;
+        }).join('');
+        
+        // Discipline Table
+        document.getElementById('disciplineTable').innerHTML = students.slice(0, 10).map(s => {
+          const score = Math.floor(Math.random() * 30) + 70;
+          const grade = score >= 90 ? 'A' : score >= 80 ? 'B' : score >= 70 ? 'C' : 'D';
+          return `<tr>
+            <td>${s.firstName} ${s.lastName}</td>
+            <td>${s.registrationNumber}</td>
+            <td>${score}</td>
+            <td><span class="badge badge-${grade === 'A' ? 'green' : grade === 'B' ? 'blue' : grade === 'C' ? 'yellow' : 'red'}">${grade}</span></td>
+            <td>Good conduct</td>
+          </tr>`;
+        }).join('');
+        
+        // Manage Discipline
+        document.getElementById('manageDisciplineTable').innerHTML = students.map(s => {
+          const score = Math.floor(Math.random() * 30) + 70;
+          return `<tr>
+            <td>${s.firstName} ${s.lastName}</td>
+            <td>${s.registrationNumber}</td>
+            <td>${s.level}</td>
+            <td>${score}%</td>
+            <td><button class="btn btn-sm">Edit</button></td>
+          </tr>`;
+        }).join('');
+        
+        // Reports
+        document.getElementById('reportsTable').innerHTML = `
+          <tr>
+            <td>2024/2025 - First Term</td>
+            <td>ND1</td>
+            <td>82%</td>
+            <td>45</td>
+          </tr>
+          <tr>
+            <td>2024/2025 - First Term</td>
+            <td>ND2</td>
+            <td>79%</td>
+            <td>38</td>
+          </tr>
+          <tr>
+            <td>2024/2025 - First Term</td>
+            <td>HND1</td>
+            <td>85%</td>
+            <td>42</td>
+          </tr>
+          <tr>
+            <td>2024/2025 - First Term</td>
+            <td>HND2</td>
+            <td>88%</td>
+            <td>35</td>
+          </tr>
+        `;
+        
+      } catch (error) {
+        console.error('Error loading data:', error);
+      }
+    }
+    
+    loadDashboardData();
+    
+    // Tab navigation
+    document.querySelectorAll('.nav-item').forEach(item => {
+      item.addEventListener('click', (e) => {
+        e.preventDefault();
+        const tab = item.dataset.tab;
+        
+        document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+        
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
+        document.getElementById(`tab-${tab}`).classList.remove('hidden');
+      });
+    });
+  </script>
+</body>
+</html>

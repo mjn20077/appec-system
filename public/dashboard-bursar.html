@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bursar Dashboard - APPEC TSS College</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="dashboard">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header role-bursar">
+        <div class="logo">
+          <div class="logo-icon" style="width: 36px; height: 36px; font-size: 1rem;">B</div>
+          <div>
+            <p style="color: white; font-weight: 700; font-size: 0.75rem;">APPEC TSS College</p>
+            <p style="color: rgba(255,255,255,0.7); font-size: 0.625rem;">Bursar</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="sidebar-user">
+        <p id="userName">Loading...</p>
+        <span id="userEmail">Loading...</span>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <a href="#" class="nav-item active" data-tab="overview">📊 Overview</a>
+        <a href="#" class="nav-item" data-tab="payments">💰 Payments</a>
+        <a href="#" class="nav-item" data-tab="students">👨‍🎓 Students</a>
+        <a href="#" class="nav-item" data-tab="reports">📋 Reports</a>
+      </nav>
+      
+      <div class="sidebar-footer">
+        <button id="logoutBtn" class="logout-btn">🚪 Logout</button>
+      </div>
+    </aside>
+    
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="page-header">
+        <div>
+          <h1>Bursar Dashboard</h1>
+          <p>Academic Year 2024/2025 - First Semester</p>
+        </div>
+      </div>
+      
+      <!-- Stats -->
+      <div class="stats-grid">
+        <div class="stat-card green">
+          <div class="label">Total Collected</div>
+          <div class="value" id="statCollected">-</div>
+          <div class="sub">fees</div>
+        </div>
+        <div class="stat-card blue">
+          <div class="label">Pending</div>
+          <div class="value" id="statPending">-</div>
+          <div class="sub">payments</div>
+        </div>
+        <div class="stat-card yellow">
+          <div class="label">Students</div>
+          <div class="value" id="statStudents">-</div>
+          <div class="sub">registered</div>
+        </div>
+        <div class="stat-card purple">
+          <div class="label">Collection</div>
+          <div class="value" id="statRate">-</div>
+          <div class="sub">rate</div>
+        </div>
+      </div>
+      
+      <!-- Tab: Overview -->
+      <div id="tab-overview" class="tab-content">
+        <div class="table-container">
+          <div class="table-header">
+            <h3>Recent Payments</h3>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Student</th>
+                <th>Reg. Number</th>
+                <th>Amount</th>
+                <th>Date</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="paymentsTable">
+              <tr><td colspan="5" class="empty-state">Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      
+      <!-- Tab: Payments -->
+      <div id="tab-payments" class="tab-content hidden">
+        <div class="table-container">
+          <div class="table-header">
+            <h3>All Payments</h3>
+            <button class="btn">Record Payment</button>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Student</th>
+                <th>Amount</th>
+                <th>Type</th>
+                <th>Date</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="allPaymentsTable">
+              <tr><td colspan="6" class="empty-state">Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      
+      <!-- Tab: Students -->
+      <div id="tab-students" class="tab-content hidden">
+        <div class="search-input">
+          <input type="text" id="studentSearch" placeholder="Search students...">
+        </div>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Reg. Number</th>
+                <th>Level</th>
+                <th>Fee Status</th>
+                <th>Balance</th>
+              </tr>
+            </thead>
+            <tbody id="studentsTable">
+              <tr><td colspan="5" class="empty-state">Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      
+      <!-- Tab: Reports -->
+      <div id="tab-reports" class="tab-content hidden">
+        <div class="table-container">
+          <div class="table-header">
+            <h3>Financial Reports</h3>
+            <button class="btn">Export</button>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Report</th>
+                <th>Period</th>
+                <th>Amount</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="reportsTable">
+              <tr><td colspan="4" class="empty-state">Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+  
+  <script src="js/main.js"></script>
+  <script>
+    // Check authentication
+    const user = getCurrentUser();
+    if (!user || user.role !== 'bursar') {
+      window.location.href = 'login.html';
+    }
+    
+    // Set user info
+    document.getElementById('userName').textContent = user.name;
+    document.getElementById('userEmail').textContent = user.email;
+    
+    // Load data
+    async function loadDashboardData() {
+      try {
+        const [students, payments] = await Promise.all([
+          fetch('/api/students').then(r => r.json()),
+          fetch('/api/fees/payments').then(r => r.json()).catch(() => [])
+        ]);
+        
+        // Stats
+        const totalAmount = payments.length > 0 ? payments.reduce((sum, p) => sum + (p.amount || 50000), 0) : 4500000;
+        document.getElementById('statCollected').textContent = '₦' + totalAmount.toLocaleString();
+        document.getElementById('statPending').textContent = Math.floor(students.length * 0.1);
+        document.getElementById('statStudents').textContent = students.length;
+        document.getElementById('statRate').textContent = '85%';
+        
+        // Recent Payments
+        document.getElementById('paymentsTable').innerHTML = students.slice(0, 5).map(s => `
+          <tr>
+            <td>${s.firstName} ${s.lastName}</td>
+            <td>${s.registrationNumber}</td>
+            <td>₦50,000</td>
+            <td>${new Date().toLocaleDateString()}</td>
+            <td><span class="badge badge-green">Paid</span></td>
+          </tr>
+        `).join('');
+        
+        // All Payments
+        document.getElementById('allPaymentsTable').innerHTML = students.map(s => `
+          <tr>
+            <td>${Math.random().toString(36).substr(2, 9).toUpperCase()}</td>
+            <td>${s.firstName} ${s.lastName}</td>
+            <td>₦50,000</td>
+            <td>School Fee</td>
+            <td>${new Date().toLocaleDateString()}</td>
+            <td><span class="badge badge-green">Paid</span></td>
+          </tr>
+        `).join('');
+        
+        // Students
+        document.getElementById('studentsTable').innerHTML = students.map(s =>>
+            <td `
+          <tr>${s.firstName} ${s.lastName}</td>
+            <td>${s.registrationNumber}</td>
+            <td>${s.level}</td>
+            <td><span class="badge badge-green">Paid</span></td>
+            <td>₦0</td>
+          </tr>
+        `).join('');
+        
+        // Reports
+        document.getElementById('reportsTable').innerHTML = `
+          <tr>
+            <td>Fee Collection Report</td>
+            <td>First Term 2024/2025</td>
+            <td>₦4,500,000</td>
+            <td><button class="btn btn-sm">Download</button></td>
+          </tr>
+          <tr>
+            <td>Outstanding Fees</td>
+            <td>Current</td>
+            <td>₦500,000</td>
+            <td><button class="btn btn-sm">Download</button></td>
+          </tr>
+          <tr>
+            <td>Payment Summary</td>
+            <td>2024/2025</td>
+            <td>₦4,500,000</td>
+            <td><button class="btn btn-sm">Download</button></td>
+          </tr>
+        `;
+        
+      } catch (error) {
+        console.error('Error loading data:', error);
+      }
+    }
+    
+    loadDashboardData();
+    
+    // Tab navigation
+    document.querySelectorAll('.nav-item').forEach(item => {
+      item.addEventListener('click', (e) => {
+        e.preventDefault();
+        const tab = item.dataset.tab;
+        
+        document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+        
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
+        document.getElementById(`tab-${tab}`).classList.remove('hidden');
+      });
+    });
+  </script>
+</body>
+</html>

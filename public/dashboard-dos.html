@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Director of Studies Dashboard - APPEC TSS College</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="dashboard">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header role-dos">
+        <div class="logo">
+          <div class="logo-icon" style="width: 36px; height: 36px; font-size: 1rem;">D</div>
+          <div>
+            <p style="color: white; font-weight: 700; font-size: 0.75rem;">APPEC TSS College</p>
+            <p style="color: rgba(255,255,255,0.7); font-size: 0.625rem;">Director of Studies</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="sidebar-user">
+        <p id="userName">Loading...</p>
+        <span id="userEmail">Loading...</span>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <a href="#" class="nav-item active" data-tab="overview">📊 Overview</a>
+        <a href="#" class="nav-item" data-tab="marks">📝 Marks Entry</a>
+        <a href="#" class="nav-item" data-tab="results">📋 Results</a>
+        <a href="#" class="nav-item" data-tab="students">👨‍🎓 Students</a>
+        <a href="#" class="nav-item" data-tab="courses">📚 Courses</a>
+      </nav>
+      
+      <div class="sidebar-footer">
+        <button id="logoutBtn" class="logout-btn">🚪 Logout</button>
+      </div>
+    </aside>
+    
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="page-header">
+        <div>
+          <h1>Director of Studies Dashboard</h1>
+          <p>Academic Year 2024/2025 - First Semester</p>
+        </div>
+      </div>
+      
+      <!-- Stats -->
+      <div class="stats-grid">
+        <div class="stat-card blue">
+          <div class="label">Total Students</div>
+          <div class="value" id="statStudents">-</div>
+          <div class="sub">registered</div>
+        </div>
+        <div class="stat-card green">
+          <div class="label">Teachers</div>
+          <div class="value" id="statTeachers">-</div>
+          <div class="sub">active staff</div>
+        </div>
+        <div class="stat-card yellow">
+          <div class="label">Courses</div>
+          <div class="value" id="statCourses">-</div>
+          <div class="sub">subjects</div>
+        </div>
+        <div class="stat-card purple">
+          <div class="label">Classes</div>
+          <div class="value" id="statClasses">-</div>
+          <div class="sub">active</div>
+        </div>
+      </div>
+      
+      <!-- Tab: Overview -->
+      <div id="tab-overview" class="tab-content">
+        <div class="table-container">
+          <div class="table-header">
+            <h3>Recent Marks Entry</h3>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Course</th>
+                <th>Student</th>
+                <th>CA</th>
+                <th>Exam</th>
+                <th>Total</th>
+                <th>Grade</th>
+              </tr>
+            </thead>
+            <tbody id="recentMarksTable">
+              <tr><td colspan="6" class="empty-state">Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      
+      <!-- Tab: Marks Entry -->
+      <div id="tab-marks" class="tab-content hidden">
+        <div class="table-container">
+          <div class="table-header">
+            <h3>Enter/Update Marks</h3>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Course</th>
+                <th>Level</th>
+                <th>Students</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="marksCoursesTable">
+              <tr><td colspan="4" class="empty-state">Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      
+      <!-- Tab: Results -->
+      <div id="tab-results" class="tab-content hidden">
+        <div class="table-container">
+          <div class="table-header">
+            <h3>Published Results</h3>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Student</th>
+                <th>Reg. Number</th>
+                <th>Level</th>
+                <th>GPA</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="resultsTable">
+              <tr><td colspan="5" class="empty-state">Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      
+      <!-- Tab: Students -->
+      <div id="tab-students" class="tab-content hidden">
+        <div class="search-input">
+          <input type="text" id="studentSearch" placeholder="Search students...">
+        </div>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Reg. Number</th>
+                <th>Level</th>
+                <th>Department</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="studentsTable">
+              <tr><td colspan="5" class="empty-state">Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      
+      <!-- Tab: Courses -->
+      <div id="tab-courses" class="tab-content hidden">
+        <div class="table-container">
+          <div class="table-header">
+            <h3>All Courses</h3>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Code</th>
+                <th>Name</th>
+                <th>Level</th>
+                <th>Department</th>
+                <th>Credits</th>
+              </tr>
+            </thead>
+            <tbody id="coursesTable">
+              <tr><td colspan="5" class="empty-state">Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+  
+  <script src="js/main.js"></script>
+  <script>
+    // Check authentication
+    const user = getCurrentUser();
+    if (!user || user.role !== 'dos') {
+      window.location.href = 'login.html';
+    }
+    
+    // Set user info
+    document.getElementById('userName').textContent = user.name;
+    document.getElementById('userEmail').textContent = user.email;
+    
+    // Load data
+    async function loadDashboardData() {
+      try {
+        const [stats, students, teachers, courses, marks] = await Promise.all([
+          fetch('/api/stats').then(r => r.json()),
+          fetch('/api/students').then(r => r.json()),
+          fetch('/api/teachers').then(r => r.json()),
+          fetch('/api/courses').then(r => r.json()),
+          fetch('/api/marks/academic').then(r => r.json())
+        ]);
+        
+        // Stats
+        document.getElementById('statStudents').textContent = stats.totalStudents;
+        document.getElementById('statTeachers').textContent = stats.totalTeachers;
+        document.getElementById('statCourses').textContent = stats.totalCourses;
+        document.getElementById('statClasses').textContent = stats.totalClasses;
+        
+        // Students Table
+        document.getElementById('studentsTable').innerHTML = students.map(s => `
+          <tr>
+            <td>${s.firstName} ${s.lastName}</td>
+            <td>${s.registrationNumber}</td>
+            <td>${s.level}</td>
+            <td>${s.department}</td>
+            <td><span class="badge badge-green">Active</span></td>
+          </tr>
+        `).join('');
+        
+        // Courses Table
+        document.getElementById('coursesTable').innerHTML = courses.map(c => `
+          <tr>
+            <td>${c.code}</td>
+            <td>${c.name}</td>
+            <td>${c.level}</td>
+            <td>${c.department}</td>
+            <td>${c.credits}</td>
+          </tr>
+        `).join('');
+        
+        // Marks Courses
+        document.getElementById('marksCoursesTable').innerHTML = courses.map(c => `
+          <tr>
+            <td>${c.code} - ${c.name}</td>
+            <td>${c.level}</td>
+            <td>${students.filter(s => s.level === c.level).length}</td>
+            <td><button class="btn btn-sm">Enter Marks</button></td>
+          </tr>
+        `).join('');
+        
+        // Results
+        document.getElementById('resultsTable').innerHTML = students.map(s => `
+          <tr>
+            <td>${s.firstName} ${s.lastName}</td>
+            <td>${s.registrationNumber}</td>
+            <td>${s.level}</td>
+            <td>${(Math.random() * 2 + 2).toFixed(2)}</td>
+            <td><span class="badge badge-green">Published</span></td>
+          </tr>
+        `).join('');
+        
+        // Recent Marks
+        document.getElementById('recentMarksTable').innerHTML = marks.length > 0 ? marks.slice(0, 10).map(m => `
+          <tr>
+            <td>${m.courseId}</td>
+            <td>${m.studentId}</td>
+            <td>${m.continuousAssessment}</td>
+            <td>${m.examScore}</td>
+            <td>${m.total}</td>
+            <td><span class="badge badge-${m.grade === 'A' ? 'green' : m.grade === 'F' ? 'red' : 'yellow'}">${m.grade}</span></td>
+          </tr>
+        `).join('') : '<tr><td colspan="6" class="empty-state">No marks entered yet</td></tr>';
+        
+      } catch (error) {
+        console.error('Error loading data:', error);
+      }
+    }
+    
+    loadDashboardData();
+    
+    // Tab navigation
+    document.querySelectorAll('.nav-item').forEach(item => {
+      item.addEventListener('click', (e) => {
+        e.preventDefault();
+        const tab = item.dataset.tab;
+        
+        document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+        
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
+        document.getElementById(`tab-${tab}`).classList.remove('hidden');
+      });
+    });
+  </script>
+</body>
+</html>

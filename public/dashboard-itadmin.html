@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IT Admin Dashboard - APPEC TSS College</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="dashboard">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header role-itadmin">
+        <div class="logo">
+          <div class="logo-icon" style="width: 36px; height: 36px; font-size: 1rem;">IT</div>
+          <div>
+            <p style="color: white; font-weight: 700; font-size: 0.75rem;">APPEC TSS College</p>
+            <p style="color: rgba(255,255,255,0.7); font-size: 0.625rem;">IT Admin</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="sidebar-user">
+        <p id="userName">Loading...</p>
+        <span id="userEmail">Loading...</span>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <a href="#" class="nav-item active" data-tab="overview">📊 Overview</a>
+        <a href="#" class="nav-item" data-tab="users">👥 Users</a>
+        <a href="#" class="nav-item" data-tab="audit">📋 Audit Logs</a>
+        <a href="#" class="nav-item" data-tab="settings">⚙️ Settings</a>
+      </nav>
+      
+      <div class="sidebar-footer">
+        <button id="logoutBtn" class="logout-btn">🚪 Logout</button>
+      </div>
+    </aside>
+    
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="page-header">
+        <div>
+          <h1>IT Administrator Dashboard</h1>
+          <p>System Administration</p>
+        </div>
+      </div>
+      
+      <!-- Stats -->
+      <div class="stats-grid">
+        <div class="stat-card blue">
+          <div class="label">Total Users</div>
+          <div class="value" id="statUsers">-</div>
+          <div class="sub">registered</div>
+        </div>
+        <div class="stat-card green">
+          <div class="label">Active Users</div>
+          <div class="value" id="statActive">-</div>
+          <div class="sub">online</div>
+        </div>
+        <div class="stat-card yellow">
+          <div class="label">Total Logins</div>
+          <div class="value" id="statLogins">-</div>
+          <div class="sub">today</div>
+        </div>
+        <div class="stat-card purple">
+          <div class="label">System</div>
+          <div class="value" id="statSystem">-</div>
+          <div class="sub">status</div>
+        </div>
+      </div>
+      
+      <!-- Tab: Overview -->
+      <div id="tab-overview" class="tab-content">
+        <div class="table-container">
+          <div class="table-header">
+            <h3>System Overview</h3>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Metric</th>
+                <th>Value</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="systemTable">
+              <tr><td colspan="3" class="empty-state">Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      
+      <!-- Tab: Users -->
+      <div id="tab-users" class="tab-content hidden">
+        <div class="search-input">
+          <input type="text" id="userSearch" placeholder="Search users...">
+        </div>
+        <div class="table-container">
+          <div class="table-header">
+            <h3>All System Users</h3>
+            <button class="btn">Add User</button>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="usersTable">
+              <tr><td colspan="5" class="empty-state">Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      
+      <!-- Tab: Audit Logs -->
+      <div id="tab-audit" class="tab-content hidden">
+        <div class="table-container">
+          <div class="table-header">
+            <h3>System Audit Logs</h3>
+            <button class="btn">Export Logs</button>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Timestamp</th>
+                <th>User</th>
+                <th>Action</th>
+                <th>IP Address</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="auditTable">
+              <tr><td colspan="5" class="empty-state">Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      
+      <!-- Tab: Settings -->
+      <div id="tab-settings" class="tab-content hidden">
+        <div class="table-container">
+          <div class="table-header">
+            <h3>System Settings</h3>
+          </div>
+          <div class="settings-form">
+            <div class="form-group">
+              <label>System Name</label>
+              <input type="text" value="APPEC TSS College Web System" readonly>
+            </div>
+            <div class="form-group">
+              <label>Version</label>
+              <input type="text" value="1.0.0" readonly>
+            </div>
+            <div class="form-group">
+              <label>Database</label>
+              <input type="text" value="In-Memory Store" readonly>
+            </div>
+            <div class="form-group">
+              <label>Session Timeout</label>
+              <input type="text" value="30 minutes" readonly>
+            </div>
+            <div class="form-group">
+              <label>Max Login Attempts</label>
+              <input type="text" value="5" readonly>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  
+  <script src="js/main.js"></script>
+  <script>
+    // Check authentication
+    const user = getCurrentUser();
+    if (!user || user.role !== 'it_admin') {
+      window.location.href = 'login.html';
+    }
+    
+    // Set user info
+    document.getElementById('userName').textContent = user.name;
+    document.getElementById('userEmail').textContent = user.email;
+    
+    // Load data
+    async function loadDashboardData() {
+      try {
+        const [users, auditLogs] = await Promise.all([
+          fetch('/api/users').then(r => r.json()),
+          fetch('/api/audit-logs').then(r => r.json()).catch(() => [])
+        ]);
+        
+        // Stats
+        document.getElementById('statUsers').textContent = users.length + 10;
+        document.getElementById('statActive').textContent = Math.floor(Math.random() * 5) + 2;
+        document.getElementById('statLogins').textContent = Math.floor(Math.random() * 20) + 10;
+        document.getElementById('statSystem').textContent = 'Healthy';
+        
+        // System Table
+        document.getElementById('systemTable').innerHTML = `
+          <tr>
+            <td>Database</td>
+            <td>Connected</td>
+            <td><span class="badge badge-green">Healthy</span></td>
+          </tr>
+          <tr>
+            <td>API Server</td>
+            <td>Running</td>
+            <td><span class="badge badge-green">Healthy</span></td>
+          </tr>
+          <tr>
+            <td>Memory Usage</td>
+            <td>45%</td>
+            <td><span class="badge badge-green">Normal</span></td>
+          </tr>
+          <tr>
+            <td>Uptime</td>
+            <td>99.9%</td>
+            <td><span class="badge badge-green">Excellent</span></td>
+          </tr>
+        `;
+        
+        // Users Table
+        const systemUsers = [
+          { name: 'Mr. John Bello', email: 'secretary@appec.edu', role: 'Secretary' },
+          { name: 'Dr. Sarah Ahmed', email: 'dos@appec.edu', role: 'Director of Studies' },
+          { name: 'Mr. Peter Obi', email: 'dod@appec.edu', role: 'Director of Discipline' },
+          { name: 'Mr. James Wilson', email: 'hod@appec.edu', role: 'HOD' },
+          { name: 'Mrs. Mary Joseph', email: 'principal@appec.edu', role: 'Principal' },
+          { name: 'Mr. David Brown', email: 'bursar@appec.edu', role: 'Bursar' },
+          { name: 'Ms. Grace Okonkwo', email: 'librarian@appec.edu', role: 'Librarian' },
+          { name: 'Mr. IT Admin', email: 'itadmin@appec.edu', role: 'IT Admin' }
+        ];
+        
+        document.getElementById('usersTable').innerHTML = systemUsers.map(u => `
+          <tr>
+            <td>${u.name}</td>
+            <td>${u.email}</td>
+            <td><span class="badge badge-blue">${u.role}</span></td>
+            <td><span class="badge badge-green">Active</span></td>
+            <td><button class="btn btn-sm">Edit</button></td>
+          </tr>
+        `).join('');
+        
+        // Audit Logs
+        const actions = ['Login', 'Logout', 'View Results', 'Update Marks', 'Register Student'];
+        document.getElementById('auditTable').innerHTML = Array.from({ length: 10 }, (_, i) => {
+          const action = actions[Math.floor(Math.random() * actions.length)];
+          const user = systemUsers[Math.floor(Math.random() * systemUsers.length)];
+          return `<tr>
+            <td>${new Date(Date.now() - i * 3600000).toLocaleString()}</td>
+            <td>${user.name}</td>
+            <td>${action}</td>
+            <td>192.168.1.${Math.floor(Math.random() * 255)}</td>
+            <td><span class="badge badge-green">Success</span></td>
+          </tr>`;
+        }).join('');
+        
+      } catch (error) {
+        console.error('Error loading data:', error);
+      }
+    }
+    
+    loadDashboardData();
+    
+    // Tab navigation
+    document.querySelectorAll('.nav-item').forEach(item => {
+      item.addEventListener('click', (e) => {
+        e.preventDefault();
+        const tab = item.dataset.tab;
+        
+        document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+        
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
+        document.getElementById(`tab-${tab}`).classList.remove('hidden');
+      });
+    });
+  </script>
+</body>
+</html>
