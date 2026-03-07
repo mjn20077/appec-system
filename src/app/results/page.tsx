@@ -126,9 +126,7 @@ function ResultsContent() {
             </div>
           )}
 
-          <p className="text-gray-400 text-xs mt-3">
-            Demo: Try registration number <strong>APPEC/2024/001</strong>
-          </p>
+
         </div>
 
         {/* Results */}
