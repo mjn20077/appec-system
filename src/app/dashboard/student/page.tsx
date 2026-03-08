@@ -66,7 +66,7 @@ export default function StudentDashboard() {
   const [showProfile, setShowProfile] = useState(false);
   const [activeTab, setActiveTab] = useState<"results" | "announcements">("results");
 
-  // Auto-login simulation for demo
+  // Auto-login for demonstration - in production, use proper authentication
   useEffect(() => {
     if (STUDENTS.length > 0) {
       setStudent(STUDENTS[0]);

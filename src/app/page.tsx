@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 // ============================================================
 // APPEC TSS College - Landing Page
@@ -15,6 +15,17 @@ export default function Home() {
   const [email, setEmail] = useState("");
   const [subscribed, setSubscribed] = useState(false);
   const [currentYear] = useState(new Date().getFullYear());
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  // Handle scroll effect
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault();
@@ -28,27 +39,112 @@ export default function Home() {
     <main className="min-h-screen bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-900 flex flex-col">
 
       {/* ---- Header ---- */}
-      <header className="bg-white/10 backdrop-blur-md border-b border-white/20 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
+      <header className={`sticky top-0 z-50 transition-all duration-300 ${
+        scrolled 
+          ? 'bg-white/95 backdrop-blur-md shadow-lg' 
+          : 'bg-white/10 backdrop-blur-md border-b border-white/20'
+      }`}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-yellow-400 rounded-full flex items-center justify-center font-bold text-blue-900 text-lg shadow-md animate-pulse">
+            <div className={`w-12 h-12 rounded-full flex items-center justify-center font-bold text-lg shadow-md transition-all duration-300 ${
+              scrolled 
+                ? 'bg-yellow-400 text-blue-900' 
+                : 'bg-yellow-400 text-blue-900 animate-pulse'
+            }`}>
               A
             </div>
             <div>
-              <h1 className="text-white font-bold text-lg leading-tight">APPEC TSS College</h1>
-              <p className="text-blue-200 text-xs">Academic Web Management System</p>
+              <h1 className={`font-bold leading-tight transition-colors duration-300 ${
+                scrolled ? 'text-blue-900' : 'text-white'
+              }`}>APPEC TSS College</h1>
+              <p className={`text-xs transition-colors duration-300 ${
+                scrolled ? 'text-blue-600' : 'text-blue-200'
+              }`}>Academic Web Management System</p>
             </div>
           </div>
-          <div className="flex items-center gap-4">
-            <div className="text-blue-200 text-sm hidden sm:block flex items-center gap-2">
+          
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center gap-6">
+            <div className={`flex items-center gap-2 text-sm transition-colors duration-300 ${
+              scrolled ? 'text-blue-700' : 'text-blue-200'
+            }`}>
               <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
-              Academic Year: 2024/2025
+              <span>Academic Year: 2024/2025</span>
             </div>
-            <Link
-              href="/login"
-              className="bg-white/20 hover:bg-white/30 text-white text-sm font-medium px-4 py-2 rounded-lg transition-all hover:scale-105"
+            <nav className="flex items-center gap-1">
+              <Link 
+                href="/admission" 
+                className={`px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 hover:scale-105 ${
+                  scrolled 
+                    ? 'text-blue-700 hover:bg-blue-50' 
+                    : 'text-white/80 hover:text-white hover:bg-white/10'
+                }`}
+              >
+                Admission
+              </Link>
+              <Link 
+                href="/results" 
+                className={`px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 hover:scale-105 ${
+                  scrolled 
+                    ? 'text-blue-700 hover:bg-blue-50' 
+                    : 'text-white/80 hover:text-white hover:bg-white/10'
+                }`}
+              >
+                Results
+              </Link>
+              <Link 
+                href="/login" 
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 hover:scale-105 ${
+                  scrolled 
+                    ? 'bg-blue-600 text-white hover:bg-blue-700' 
+                    : 'bg-white/20 hover:bg-white/30 text-white'
+                }`}
+              >
+                Staff Login
+              </Link>
+            </nav>
+          </div>
+
+          {/* Mobile Menu Button */}
+          <button 
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="md:hidden p-2 rounded-lg transition-colors"
+          >
+            <svg className={`w-6 h-6 transition-colors duration-300 ${scrolled ? 'text-blue-900' : 'text-white'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              {mobileMenuOpen ? (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              ) : (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              )}
+            </svg>
+          </button>
+        </div>
+
+        {/* Mobile Menu */}
+        <div className={`md:hidden absolute top-full left-0 right-0 bg-white shadow-lg transition-all duration-300 overflow-hidden ${
+          mobileMenuOpen ? 'max-h-64 opacity-100' : 'max-h-0 opacity-0'
+        }`}>
+          <div className="px-4 py-3 space-y-2">
+            <Link 
+              href="/admission" 
+              className="block px-4 py-2 text-blue-700 hover:bg-blue-50 rounded-lg font-medium"
+              onClick={() => setMobileMenuOpen(false)}
             >
-              Staff Login
+              📄 Admission
+            </Link>
+            <Link 
+              href="/results" 
+              className="block px-4 py-2 text-blue-700 hover:bg-blue-50 rounded-lg font-medium"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              📊 Results
+            </Link>
+            <Link 
+              href="/login" 
+              className="block px-4 py-2 bg-blue-600 text-white hover:bg-blue-700 rounded-lg font-medium text-center"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              🔐 Staff Login
             </Link>
           </div>
         </div>
